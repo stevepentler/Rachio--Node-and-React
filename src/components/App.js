@@ -4,6 +4,7 @@ import '../assets/stylesheets/style.scss';
 import React, { Component } from 'react';
 import Header from './Header';
 import Device from './Device';
+import $ from 'jquery';
 
 var App = React.createClass({
 
