@@ -16,12 +16,11 @@ var App = React.createClass({
   },
 
   componentDidMount() {
-    console.log("env variable", process.env.RACHIO_ACCESS_TOKEN)
     this.getUserId();
   },
 
   headers() {
-    return {"Authorization": "Bearer c3667b81-92a6-4913-b83c-64cc713cbc1e",
+    return {"Authorization": "Bearer " + RACHIO_ACCESS_TOKEN,
             "Content-Type": "application/json"}
   },
 
