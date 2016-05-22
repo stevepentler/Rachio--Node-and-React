@@ -1,5 +1,5 @@
 node_modules/
 *npm-debug.log
 *.DS_Store
-.webpack.config.js
-.webpack.prod.config.js
+webpack.config.js
+webpack.prod.config.js
