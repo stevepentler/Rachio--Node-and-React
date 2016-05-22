@@ -11,14 +11,18 @@ var App = React.createClass({
   getInitialState() {
     return { zones: {},
              device: {},
-             accessToken = "Authorization": "Bearer ${process.env.RACHIO_ACCESS_TOKEN}",
-             contentType = "Content-Type": "application/json",
              userId: "",
              deviceId: "",
            }
   },
 
+  headers() {
+    return {"Authorization": "Bearer ",
+            "Content-Type": "application/json"}
+  },
+
   componentDidMount() {
+    console.log("env variable", process.env.RACHIO_ACCESS_TOKEN)
     this.getUserId()
   },
 
@@ -26,11 +30,11 @@ var App = React.createClass({
     $.ajax({
       url: "https://api.rach.io/1/public/person/info",
       type: 'GET',
-      headers: {this.state.accessToken, this.state.contentType},
+      headers:  this.headers(),
       success: (response) => {
         console.log("retrieve userId", response)
-        const userId = response.id;
-        this.setState({ userId: userId})
+        this.setState({ userId: response.id})
+        console.log("userId as state", this.state.userId)
 
       },
       error: (error) => {
