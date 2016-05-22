@@ -1,4 +1,6 @@
 'use strict';
+import React, {Component} from 'react';
+import WateringForm from './WateringForm';
 
 var Zone = React.createClass({
 

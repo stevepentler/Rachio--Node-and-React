@@ -1,3 +1,6 @@
+'use strict';
+import React, {Component} from 'react';
+
 var WateringForm = React.createClass({
   getInitialState() {
     return { watering: false,
