@@ -6,37 +6,36 @@ import React, { Component } from 'react';
 import Header from './Header';
 import Device from './Device';
 
-request(options, callback);
-
 var App = React.createClass({
-
-  var headerData =
-    return { "Authorization" => "Bearer ${process.env.RACHIO_ACCESS_TOKEN}",
-             "Content-Type" => "application/json" },
 
   getInitialState() {
     return { zones: {},
              device: {},
+             accessToken = "Authorization": "Bearer ${process.env.RACHIO_ACCESS_TOKEN}",
+             contentType = "Content-Type": "application/json",
              userId: "",
-             deviceId: ""
+             deviceId: "",
            }
   },
 
   componentDidMount() {
-    this.getUserId().then(this.getDevices()).then(this.getZones())
+    this.getUserId()
   },
 
   getUserId() {
     $.ajax({
       url: "https://api.rach.io/1/public/person/info",
       type: 'GET',
-      headers: headerData,
+      headers: {this.state.accessToken, this.state.contentType},
       success: (response) => {
         console.log("retrieve userId", response)
         const userId = response.id;
         this.setState({ userId: userId})
 
-      }
+      },
+      error: (error) => {
+        console.log("error", error);
+      },
     })
   },
 
@@ -44,7 +43,7 @@ var App = React.createClass({
     $.ajax({
       url: "https://api.rach.io/1/public/${this.state.userId}",
       type: 'GET',
-      headers: headerData,
+      headers: this.headerData,
       success: (response) => {
         console.log("retrieve devices", response)
         const deviceId = response.devices;
@@ -57,7 +56,7 @@ var App = React.createClass({
     $.ajax({
       url: "https://api.rach.io/1/public/device/${deviceId}",
       type: 'GET',
-      headers: headerData,
+      headers: this.headerData,
       success: (response) => {
         console.log("retrieve zones", response)
         this.setState({ zones: response.zones})
@@ -71,7 +70,7 @@ var App = React.createClass({
       url: "https://api.rach.io/1/public/" + zoneData.zoneId,
       type: 'PUT',
       data: zoneData,
-      headers: headerData,
+      headers: this.headerData,
     }).then(console.log("watering " + zoneData.zoneId + " for " + zoneData.zoneDuration +  " seconds"))
   },
 
