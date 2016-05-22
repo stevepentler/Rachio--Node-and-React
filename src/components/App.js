@@ -11,19 +11,18 @@ var App = React.createClass({
   getInitialState() {
     return { zones: {},
              device: {},
-             userId: "",
-             deviceId: "",
+             userId: ""
            }
   },
 
   headers() {
-    return {"Authorization": "Bearer ",
+    return {"Authorization": "Bearer c3667b81-92a6-4913-b83c-64cc713cbc1e",
             "Content-Type": "application/json"}
   },
 
   componentDidMount() {
     console.log("env variable", process.env.RACHIO_ACCESS_TOKEN)
-    this.getUserId()
+    this.getUserId();
   },
 
   getUserId() {
@@ -32,10 +31,24 @@ var App = React.createClass({
       type: 'GET',
       headers:  this.headers(),
       success: (response) => {
-        console.log("retrieve userId", response)
         this.setState({ userId: response.id})
-        console.log("userId as state", this.state.userId)
+      },
+      error: (error) => {
+        console.log("error", error);
+      },
+    }).then(this.getDevice);
+  },
 
+  getDevice() {
+    console.log("userId as state", this.state.userId)
+    $.ajax({
+      url: "https://api.rach.io/1/public/person/" + this.state.userId,
+      type: 'GET',
+      headers: this.headers(),
+      success: (response) => {
+        console.log("retrieve devices", response.devices[0])
+        const firstDevice = response.devices[0]
+        this.setState({ device: firstDevice})
       },
       error: (error) => {
         console.log("error", error);
@@ -43,24 +56,11 @@ var App = React.createClass({
     })
   },
 
-  getDevices() {
-    $.ajax({
-      url: "https://api.rach.io/1/public/${this.state.userId}",
-      type: 'GET',
-      headers: this.headerData,
-      success: (response) => {
-        console.log("retrieve devices", response)
-        const deviceId = response.devices;
-        this.setState({ deviceId: deviceId})
-      }
-    })
-  },
-
   getZones() {
     $.ajax({
       url: "https://api.rach.io/1/public/device/${deviceId}",
       type: 'GET',
-      headers: this.headerData,
+      headers: this.headers(),
       success: (response) => {
         console.log("retrieve zones", response)
         this.setState({ zones: response.zones})
@@ -74,7 +74,7 @@ var App = React.createClass({
       url: "https://api.rach.io/1/public/" + zoneData.zoneId,
       type: 'PUT',
       data: zoneData,
-      headers: this.headerData,
+      headers: this.headers(),
     }).then(console.log("watering " + zoneData.zoneId + " for " + zoneData.zoneDuration +  " seconds"))
   },
 
