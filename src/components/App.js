@@ -15,20 +15,14 @@ var App = React.createClass({
            }
   },
 
-  headers() {
-    return {"Authorization": "Bearer c3667b81-92a6-4913-b83c-64cc713cbc1e",
-            "Content-Type": "application/json"}
-  },
-
-  formatZoneData(zoneData) {
-    let zoneId = zoneData.zoneId;
-    let zoneDuration = zoneData.zoneDuration;
-    return "{ \"id\" : \"" + zoneId + "\", \"duration\" : " + zoneDuration + "} }"
-  },
-
   componentDidMount() {
     console.log("env variable", process.env.RACHIO_ACCESS_TOKEN)
     this.getUserId();
+  },
+
+  headers() {
+    return {"Authorization": "Bearer c3667b81-92a6-4913-b83c-64cc713cbc1e",
+            "Content-Type": "application/json"}
   },
 
   getUserId() {
@@ -90,6 +84,11 @@ var App = React.createClass({
     }).then(console.log("watering " + zoneData.zoneId + " for " + zoneData.zoneDuration +  " seconds"))
   },
 
+  formatZoneData(zoneData) {
+    let zoneId = zoneData.zoneId;
+    let zoneDuration = zoneData.zoneDuration;
+    return "{ \"id\" : \"" + zoneId + "\", \"duration\" : " + zoneDuration + "} }"
+  },
 
   render() {
     return (
