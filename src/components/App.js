@@ -53,18 +53,21 @@ var App = React.createClass({
       error: (error) => {
         console.log("error", error);
       },
-    })
+    }).then(this.getZones);
   },
 
   getZones() {
     $.ajax({
-      url: "https://api.rach.io/1/public/device/${deviceId}",
+      url: "https://api.rach.io/1/public/device/" + this.state.device.id,
       type: 'GET',
       headers: this.headers(),
       success: (response) => {
-        console.log("retrieve zones", response)
+        console.log("retrieve zones", response.zones)
         this.setState({ zones: response.zones})
-      }
+      },
+      error: (error) => {
+        console.log("error", error);
+      },
     })
   },
 
