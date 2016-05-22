@@ -21,8 +21,9 @@ var App = React.createClass({
   },
 
   formatZoneData(zoneData) {
-    console.log(zoneData);
-    return "{ \"id\" : \"${zoneData.zoneId}\", \"duration\" : ${zoneData.zoneDuration} }"
+    let zoneId = zoneData.zoneId;
+    let zoneDuration = zoneData.zoneDuration;
+    return "{ \"id\" : \"" + zoneId + "\", \"duration\" : " + zoneDuration + "} }"
   },
 
   componentDidMount() {
@@ -83,6 +84,9 @@ var App = React.createClass({
       type: 'PUT',
       data: this.formatZoneData(zoneData),
       headers: this.headers(),
+      error: (error) => {
+        console.log("error", error);
+      },
     }).then(console.log("watering " + zoneData.zoneId + " for " + zoneData.zoneDuration +  " seconds"))
   },
 
