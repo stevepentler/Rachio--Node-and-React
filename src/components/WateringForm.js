@@ -54,3 +54,5 @@ var WateringForm = React.createClass({
     )
   }
 })
+
+export default WateringForm;

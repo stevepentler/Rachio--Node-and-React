@@ -67,7 +67,7 @@ var App = React.createClass({
       type: 'GET',
       headers: this.headers(),
       success: (response) => {
-        console.log("retrieve zones", response.zones)
+        console.log("zone state", response.zones)
         this.setState({ zones: response.zones})
       },
       error: (error) => {
