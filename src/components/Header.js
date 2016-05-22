@@ -1,5 +1,7 @@
 'use strict';
 
+import React, { Component } from 'react';
+
 class Header extends React.Component {
 
   render() {
@@ -10,3 +12,5 @@ class Header extends React.Component {
     )
   }
 };
+
+export default Header;

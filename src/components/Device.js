@@ -1,4 +1,6 @@
 'use strict';
+import React, { Component } from 'react';
+import AllZones from './AllZones'
 
 var Device = React.createClass({
 
@@ -32,3 +34,5 @@ var Device = React.createClass({
     )
   }
 });
+
+export default Device

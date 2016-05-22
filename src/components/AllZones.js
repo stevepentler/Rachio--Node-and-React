@@ -1,5 +1,6 @@
 'use strict';
 
+import React, { Component } from 'react';
 var AllZones = React.createClass({
 
   render() {
@@ -21,3 +22,5 @@ var AllZones = React.createClass({
     )
   }
 });
+
+export default AllZones;
