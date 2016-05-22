@@ -10,52 +10,57 @@ request(options, callback);
 
 var App = React.createClass({
 
-  const headerData =
+  var headerData =
     return { "Authorization" => "Bearer ${process.env.RACHIO_ACCESS_TOKEN}",
              "Content-Type" => "application/json" },
 
   getInitialState() {
     return { zones: {},
-             device: {}
+             device: {},
+             userId: "",
+             deviceId: ""
            }
   },
 
   componentDidMount() {
-    this.getDevices().then(this.getZones())
+    this.getUserId().then(this.getDevices()).then(this.getZones())
   },
 
   getUserId() {
     $.ajax({
-      url: "https://api.rach.io/1/public/",
+      url: "https://api.rach.io/1/public/person/info",
       type: 'GET',
       headers: headerData,
       success: (response) => {
-        console.log("retrieve zones", response)
-        this.setState({ zones: response})
-      }
-    })
-  },
+        console.log("retrieve userId", response)
+        const userId = response.id;
+        this.setState({ userId: userId})
 
-  getZones() {
-    $.ajax({
-      url: '/api/v1/data',
-      type: 'GET',
-      headers: headerData,
-      success: (response) => {
-        console.log("retrieve zones", response)
-        this.setState({ zones: response})
       }
     })
   },
 
   getDevices() {
     $.ajax({
-      url: '/api/v1/devices',
+      url: "https://api.rach.io/1/public/${this.state.userId}",
       type: 'GET',
       headers: headerData,
       success: (response) => {
         console.log("retrieve devices", response)
-        this.setState({ device: response})
+        const deviceId = response.devices;
+        this.setState({ deviceId: deviceId})
+      }
+    })
+  },
+
+  getZones() {
+    $.ajax({
+      url: "https://api.rach.io/1/public/device/${deviceId}",
+      type: 'GET',
+      headers: headerData,
+      success: (response) => {
+        console.log("retrieve zones", response)
+        this.setState({ zones: response.zones})
       }
     })
   },
