@@ -6,7 +6,13 @@ import React, { Component } from 'react';
 import Header from './Header';
 import Device from './Device';
 
+request(options, callback);
+
 var App = React.createClass({
+
+  const headerData =
+    return { "Authorization" => "Bearer ${process.env.RACHIO_ACCESS_TOKEN}",
+             "Content-Type" => "application/json" },
 
   getInitialState() {
     return { zones: {},
@@ -15,23 +21,26 @@ var App = React.createClass({
   },
 
   componentDidMount() {
-    this.loadData()
+    this.getDevices().then(this.getZones())
   },
 
-  loadData() {
+  getUserId() {
     $.ajax({
-      url: '/api/v1/data',
+      url: "https://api.rach.io/1/public/",
       type: 'GET',
+      headers: headerData,
       success: (response) => {
-        console.log('Data Loaded', response);
+        console.log("retrieve zones", response)
+        this.setState({ zones: response})
       }
-    }).then(this.getZones).then(this.getDevices);
+    })
   },
 
   getZones() {
     $.ajax({
       url: '/api/v1/data',
       type: 'GET',
+      headers: headerData,
       success: (response) => {
         console.log("retrieve zones", response)
         this.setState({ zones: response})
@@ -43,6 +52,7 @@ var App = React.createClass({
     $.ajax({
       url: '/api/v1/devices',
       type: 'GET',
+      headers: headerData,
       success: (response) => {
         console.log("retrieve devices", response)
         this.setState({ device: response})
@@ -53,9 +63,10 @@ var App = React.createClass({
   waterZone(zoneData) {
     console.log("zonedata", zoneData)
     $.ajax({
-      url: '/api/v1/zones/' + zoneData.zoneId,
+      url: "https://api.rach.io/1/public/" + zoneData.zoneId,
       type: 'PUT',
       data: zoneData,
+      headers: headerData,
     }).then(console.log("watering " + zoneData.zoneId + " for " + zoneData.zoneDuration +  " seconds"))
   },
 
