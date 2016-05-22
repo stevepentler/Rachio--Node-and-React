@@ -11,7 +11,7 @@ var WateringForm = React.createClass({
     event.preventDefault();
     var zoneData = {
       zoneId: this.refs.zoneId.value,
-      zoneDuration: this.refs.zoneDuration.value * 60
+      zoneDuration: parseInt(this.refs.zoneDuration.value * 60)
     }
     this.props.waterZone(zoneData);
     this.setState( { watering: true,
@@ -54,3 +54,5 @@ var WateringForm = React.createClass({
     )
   }
 })
+
+export default WateringForm;

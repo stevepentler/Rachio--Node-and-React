@@ -5,9 +5,9 @@ import WateringForm from './WateringForm';
 var Zone = React.createClass({
 
   render() {
-    var zone = this.props.zone
+    var zone = this.props.zone;
     var date = new Date(zone.lastWateredDate).toLocaleString();
-    var previousDuration = parseInt(zone.lastWateredDuration / 60)
+    var previousDuration = parseInt(zone.lastWateredDuration / 60);
     return(
       <div className="card zone-card">
         <div className="row">
@@ -26,3 +26,5 @@ var Zone = React.createClass({
   }
 
 });
+
+export default Zone;

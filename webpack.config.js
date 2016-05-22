@@ -26,6 +26,9 @@ module.exports = {
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoErrorsPlugin(),
+    new webpack.DefinePlugin({
+      RACHIO_ACCESS_TOKEN: "'c3667b81-92a6-4913-b83c-64cc713cbc1e'"
+    })
   ]
 };

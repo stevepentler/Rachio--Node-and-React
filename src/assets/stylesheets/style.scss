@@ -1,4 +1,24 @@
-h1 {
-  font-family: helvetica;
-  font-weight: 200;
+body {
+  font-family: 'Roboto', sans-serif;
+  color: #00283A;
+}
+
+.blue-font {
+  color: #00A6E5;
+}
+
+.active {
+  color: #00283A;
+}
+
+.zone-card {
+  padding: 5px 10px;
+}
+
+.btn {
+  background-color: #00A6E5;
+}
+
+.btn:hover, .btn-large:hover {
+  background-color: #00283A;
 }

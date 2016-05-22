@@ -1,64 +1,93 @@
 'use strict';
 
 import '../assets/stylesheets/style.scss';
+import $ from 'jquery';
 import React, { Component } from 'react';
 import Header from './Header';
 import Device from './Device';
-import $ from 'jquery';
 
 var App = React.createClass({
 
   getInitialState() {
     return { zones: {},
-             device: {}
+             device: {},
+             userId: ""
            }
   },
 
   componentDidMount() {
-    this.loadData()
+    this.getUserId();
   },
 
-  loadData() {
+  headers() {
+    return {"Authorization": "Bearer " + RACHIO_ACCESS_TOKEN,
+            "Content-Type": "application/json"}
+  },
+
+  getUserId() {
     $.ajax({
-      url: '/api/v1/data',
+      url: "https://api.rach.io/1/public/person/info",
       type: 'GET',
+      headers:  this.headers(),
       success: (response) => {
-        console.log('Data Loaded', response);
-      }
-    }).then(this.getZones).then(this.getDevices);
+        this.setState({ userId: response.id})
+      },
+      error: (error) => {
+        console.log("error", error);
+      },
+    }).then(this.getDevice);
+  },
+
+  getDevice() {
+    console.log("userId as state", this.state.userId)
+    $.ajax({
+      url: "https://api.rach.io/1/public/person/" + this.state.userId,
+      type: 'GET',
+      headers: this.headers(),
+      success: (response) => {
+        console.log("retrieve devices", response.devices[0])
+        const firstDevice = response.devices[0]
+        this.setState({ device: firstDevice})
+      },
+      error: (error) => {
+        console.log("error", error);
+      },
+    }).then(this.getZones);
   },
 
   getZones() {
     $.ajax({
-      url: '/api/v1/data',
+      url: "https://api.rach.io/1/public/device/" + this.state.device.id,
       type: 'GET',
+      headers: this.headers(),
       success: (response) => {
-        console.log("retrieve zones", response)
-        this.setState({ zones: response})
-      }
-    })
-  },
-
-  getDevices() {
-    $.ajax({
-      url: '/api/v1/devices',
-      type: 'GET',
-      success: (response) => {
-        console.log("retrieve devices", response)
-        this.setState({ device: response})
-      }
+        console.log("zone state", response.zones)
+        this.setState({ zones: response.zones})
+      },
+      error: (error) => {
+        console.log("error", error);
+      },
     })
   },
 
   waterZone(zoneData) {
     console.log("zonedata", zoneData)
     $.ajax({
-      url: '/api/v1/zones/' + zoneData.zoneId,
+      url: "https://api.rach.io/1/public/zone/start",
       type: 'PUT',
-      data: zoneData,
+      data: this.formatZoneData(zoneData),
+      headers: this.headers(),
+      error: (error) => {
+        console.log("error", error);
+      },
     }).then(console.log("watering " + zoneData.zoneId + " for " + zoneData.zoneDuration +  " seconds"))
   },
 
+  formatZoneData(zoneData) {
+    let zoneId = zoneData.zoneId;
+    let zoneDuration = zoneData.zoneDuration;
+    return "{ \"id\" : \"" + zoneId + "\", \"duration\" : " + zoneDuration + "} }"
+  },
 
   render() {
     return (
