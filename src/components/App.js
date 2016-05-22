@@ -20,6 +20,11 @@ var App = React.createClass({
             "Content-Type": "application/json"}
   },
 
+  formatZoneData(zoneData) {
+    console.log(zoneData);
+    return "{ \"id\" : \"${zoneData.zoneId}\", \"duration\" : ${zoneData.zoneDuration} }"
+  },
+
   componentDidMount() {
     console.log("env variable", process.env.RACHIO_ACCESS_TOKEN)
     this.getUserId();
@@ -74,9 +79,9 @@ var App = React.createClass({
   waterZone(zoneData) {
     console.log("zonedata", zoneData)
     $.ajax({
-      url: "https://api.rach.io/1/public/" + zoneData.zoneId,
+      url: "https://api.rach.io/1/public/zone/start",
       type: 'PUT',
-      data: zoneData,
+      data: this.formatZoneData(zoneData),
       headers: this.headers(),
     }).then(console.log("watering " + zoneData.zoneId + " for " + zoneData.zoneDuration +  " seconds"))
   },
