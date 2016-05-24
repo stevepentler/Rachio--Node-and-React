@@ -1,4 +1,4 @@
-# React + Node Starter (for [Heroku](https://www.heroku.com/) deployment) from [alanbsmith](https://github.com/alanbsmith)
+### React + Node Starter (for [Heroku](https://www.heroku.com/) deployment) from [alanbsmith](https://github.com/alanbsmith)
 
 ### UP & RUNNING
 * `npm install`
