@@ -5,30 +5,15 @@ import AllZones from './AllZones'
 var Device = React.createClass({
 
   render() {
-    var device_id = this.props.device.device_id;
-    var preloader = (
-      <div className="preloader-wrapper big active">
-          <div className="spinner-layer spinner-blue-only">
-            <div className="circle-clipper left">
-              <div className="circle"></div>
-            </div><div className="gap-patch">
-              <div className="circle"></div>
-            </div><div className="circle-clipper right">
-              <div className="circle"></div>
-            </div>
-          </div>
-        </div>
-    )
+    var deviceName = this.props.device.name;
 
-    if (!device_id) {
-      device_id = preloader;
-    } else {
-      device_id = (<h5>Device ID: {device_id}</h5>)
+    if (deviceName) {
+      deviceName = (<h5>Device: {deviceName}</h5>)
     }
 
     return(
       <div>
-        {device_id}
+        {deviceName}
         < AllZones device={this.props.device} zones={this.props.zones} waterZone={this.props.waterZone} />
       </div>
     )
